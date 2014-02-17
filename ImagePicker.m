@@ -167,7 +167,10 @@
 {
     if (!self.mImagePickerController)
     {
-        self.mImagePickerController = [[UIImagePickerController alloc] init];
+        UIImagePickerController* lUIImagePickerController = [[UIImagePickerController alloc] init];
+        self.mImagePickerController = lUIImagePickerController;
+        [lUIImagePickerController release];
+        
         self.mImagePickerController.delegate = self;
     }
     
@@ -184,8 +187,11 @@
 - (void)chooseFromCamera
 {
     if (!self.mImagePickerController)
-    {
-        self.mImagePickerController = [[UIImagePickerController alloc] init];
+    {        
+        UIImagePickerController* lUIImagePickerController = [[UIImagePickerController alloc] init];
+        self.mImagePickerController = lUIImagePickerController;
+        [lUIImagePickerController release];
+        
         self.mImagePickerController.delegate = self;
     }
     
