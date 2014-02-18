@@ -49,6 +49,7 @@
 - (void)dealloc
 {
     [_mImage release];
+    _mImagePickerController.delegate = nil;
     [_mImagePickerController release];
     [super dealloc];
 }
