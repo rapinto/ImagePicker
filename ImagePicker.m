@@ -139,7 +139,7 @@
 		{
             [self chooseFromCamera];
 		}
-		else if (buttonIndex == 2 && actionSheet.tag == 1)
+		else if (buttonIndex == 2 && actionSheet.tag == kImagePickingActionSheetTag)
 		{
 			[_mDelegate imagePickerDeleteImage:self];
 		}
@@ -150,7 +150,7 @@
 		{
 			[self chooseFromAlbum];
 		}
-		else if(buttonIndex == 1 && actionSheet.tag == 1)
+		else if(buttonIndex == 1 && actionSheet.tag == kImagePickingActionSheetTag)
 		{
 			[_mDelegate imagePickerDeleteImage:self];
 		}
