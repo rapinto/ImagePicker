@@ -141,8 +141,8 @@
 		}
 		else if (buttonIndex == 2 && actionSheet.tag == kImagePickingActionSheetTag)
 		{
-			[_mDelegate imagePickerDeleteImage:self];
         		 self.mImage = nil;
+			[_mDelegate imagePickerDeleteImage:self];
 		}
 	}
 	else
@@ -153,8 +153,8 @@
 		}
 		else if(buttonIndex == 1 && actionSheet.tag == kImagePickingActionSheetTag)
 		{
-			[_mDelegate imagePickerDeleteImage:self];
         		self.mImage = nil;
+			[_mDelegate imagePickerDeleteImage:self];
 		}
 	}
 }
