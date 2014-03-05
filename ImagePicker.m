@@ -129,34 +129,34 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-	{
-		if(buttonIndex == 0)
-		{
-			[self chooseFromAlbum];
-		}
-		else if(buttonIndex == 1)
-		{
-            [self chooseFromCamera];
-		}
-		else if (buttonIndex == 2 && actionSheet.tag == kImagePickingActionSheetTag)
-		{
-        		 self.mImage = nil;
-			[_mDelegate imagePickerDeleteImage:self];
-		}
-	}
-	else
-	{
-		if(buttonIndex == 0)
-		{
-			[self chooseFromAlbum];
-		}
-		else if(buttonIndex == 1 && actionSheet.tag == kImagePickingActionSheetTag)
-		{
-        		self.mImage = nil;
-			[_mDelegate imagePickerDeleteImage:self];
-		}
-	}
+    if (actionSheet.tag != kImagePickingActionSheetTag)
+    {
+        return;
+    }
+    
+    if (buttonIndex == actionSheet.cancelButtonIndex)
+    {
+        [self.mDelegate imagePickerCancel:self];
+        return;
+    }
+    
+    NSString* buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    
+	if([buttonTitle isEqualToString:NSLocalizedString(@"StudioView.fromAlbum", nil)])
+    {
+        [self chooseFromAlbum];
+    }
+    else if([buttonTitle isEqualToString:NSLocalizedString(@"StudioView.fromCamera", nil)])
+    {
+        [self chooseFromCamera];
+    }
+    else if ([buttonTitle isEqualToString:NSLocalizedString(@"Delete", nil)])
+    {
+        self.mImage = nil;
+        [_mDelegate imagePickerDeleteImage:self];
+        self.mImage = nil;
+        mDeletePicture = YES;
+    }
 }
 
 
