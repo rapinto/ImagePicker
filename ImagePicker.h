@@ -30,17 +30,21 @@
 #import "ImagePickerDelegate.h"
 
 
-@interface ImagePicker : NSObject <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface ImagePicker : NSObject <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate>
 
 
 @property (nonatomic, retain) UIImage* mImage;
 @property (nonatomic, assign) NSObject <ImagePickerDelegate>* mDelegate;
 @property (nonatomic, retain) UIImagePickerController* mImagePickerController;
+@property (nonatomic, retain) NSString* mImageLink;
 @property (nonatomic) BOOL mEditable;
 @property (nonatomic) BOOL mTryUseFrontCamera;
 @property (nonatomic) BOOL mUsingCamera;
+@property (nonatomic) BOOL mDeletePicture;
 
 - (void)pickImage;
+- (void)chooseFromAlbum;
+- (void)chooseFromCamera;
 
 
 @end

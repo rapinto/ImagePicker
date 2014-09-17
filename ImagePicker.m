@@ -38,6 +38,8 @@
 
 @synthesize mEditable;
 @synthesize mTryUseFrontCamera;
+@synthesize mDeletePicture;
+@synthesize mImageLink;
 
 
 
@@ -51,6 +53,7 @@
     [_mImage release];
     _mImagePickerController.delegate = nil;
     [_mImagePickerController release];
+    [mImageLink release];
     [super dealloc];
 }
 
@@ -73,42 +76,42 @@
     
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
-        if (self.mImage)
+        if (self.mImage  || [self.mImageLink length] > 0)
         {
             [lButtonArray addObject:NSLocalizedString(@"Delete", nil)];
-            lActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"StudioView.choosePicture", nil)
+            lActionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                          destructiveButtonTitle:nil
-                                              otherButtonTitles:NSLocalizedString(@"StudioView.fromAlbum", nil), NSLocalizedString(@"Delete", nil), nil];
+                                              otherButtonTitles:NSLocalizedString(@"FromLibrary", nil), NSLocalizedString(@"ImageLink", @""), NSLocalizedString(@"Delete", nil), nil];
         }
         else
         {
-            lActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"StudioView.choosePicture", nil)
+            lActionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                          destructiveButtonTitle:nil
-                                              otherButtonTitles:NSLocalizedString(@"StudioView.fromAlbum", nil), nil];
+                                              otherButtonTitles:NSLocalizedString(@"FromLibrary", nil), NSLocalizedString(@"ImageLink", @""), nil];
         }
     }
     else
     {
-        if (self.mImage)
+        if (self.mImage || [self.mImageLink length] > 0)
         {
             [lButtonArray addObject:NSLocalizedString(@"Delete", nil)];
-            lActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"StudioView.choosePicture", nil)
+            lActionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                          destructiveButtonTitle:nil
-                                              otherButtonTitles:NSLocalizedString(@"StudioView.fromAlbum", nil), NSLocalizedString(@"StudioView.fromCamera", nil), NSLocalizedString(@"Delete", nil), nil];
+                                              otherButtonTitles:NSLocalizedString(@"FromLibrary", nil), NSLocalizedString(@"TakeAPicture", nil), NSLocalizedString(@"ImageLink", @""), NSLocalizedString(@"Delete", nil), nil];
         }
         else
         {
-            lActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"StudioView.choosePicture", nil)
+            lActionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                          destructiveButtonTitle:nil
-                                              otherButtonTitles:NSLocalizedString(@"StudioView.fromAlbum", nil), NSLocalizedString(@"StudioView.fromCamera", nil), nil];
+                                              otherButtonTitles:NSLocalizedString(@"FromLibrary", nil), NSLocalizedString(@"TakeAPicture", nil), NSLocalizedString(@"ImageLink", @""), nil];
         }
     }
     
@@ -142,20 +145,66 @@
     
     NSString* buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
-	if([buttonTitle isEqualToString:NSLocalizedString(@"StudioView.fromAlbum", nil)])
+	if([buttonTitle isEqualToString:NSLocalizedString(@"FromLibrary", nil)])
     {
         [self chooseFromAlbum];
     }
-    else if([buttonTitle isEqualToString:NSLocalizedString(@"StudioView.fromCamera", nil)])
+    else if([buttonTitle isEqualToString:NSLocalizedString(@"TakeAPicture", nil)])
     {
         [self chooseFromCamera];
+    }
+    else if([buttonTitle isEqualToString:NSLocalizedString(@"ImageLink", nil)])
+    {
+        UIAlertView* lAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PasteImageURL", @"")
+                                                             message:nil
+                                                            delegate:self
+                                                   cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                   otherButtonTitles:nil];
+        lAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+        lAlertView.tag = 212;
+        [lAlertView show];
+        [lAlertView release];
     }
     else if ([buttonTitle isEqualToString:NSLocalizedString(@"Delete", nil)])
     {
         self.mImage = nil;
+        self.mImageLink = nil;
         [_mDelegate imagePickerDeleteImage:self];
         self.mImage = nil;
         mDeletePicture = YES;
+    }
+}
+
+
+
+#pragma mark -
+#pragma mark UI Alert View Delegate Methods
+
+
+
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 212)
+    {
+        UITextField* lTextField = [alertView textFieldAtIndex:0];
+        
+        if ([lTextField.text length] == 0)
+        {
+            return;
+        }
+        
+        self.mImage = nil;
+        self.mImageLink = lTextField.text;
+        
+        
+        if ([self.mImageLink length] > 0 && [self.mDelegate respondsToSelector:@selector(imagePicker:DidEnterAPictureLink:)])
+        {
+            [self.mDelegate imagePicker:self DidEnterAPictureLink:lTextField.text];
+        }
+        else if ([self.mImageLink length])
+        {
+            [self.mDelegate imagePickerCancel:self];
+        }
     }
 }
 

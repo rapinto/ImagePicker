@@ -37,6 +37,7 @@
 
 - (void)imagePicker:(ImagePicker*)_ImagePicker DidFinishPickingImageFromCamera:(UIImage*)_Image;
 - (void)imagePicker:(ImagePicker*)_ImagePicker DidFinishPickingImageFromGallery:(UIImage*)_Image;
+- (void)imagePicker:(ImagePicker*)_ImagePicker DidEnterAPictureLink:(NSString *)_ImageLink;
 - (void)imagePickerDeleteImage:(ImagePicker*)_ImagePicker;
 - (void)imagePickerCancel:(ImagePicker*)_ImagePicker;
 - (UIViewController*)viewControllerToDisplayImagePicker:(ImagePicker*)_ImagePicker;
