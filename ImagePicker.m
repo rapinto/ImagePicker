@@ -70,52 +70,32 @@
     {
         return;
     }
-    UIActionSheet * lActionSheet	= nil;
-    NSMutableArray* lButtonArray = [NSMutableArray array];
     
     
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-    {
-        if (self.mImage  || [self.mImageLink length] > 0)
-        {
-            [lButtonArray addObject:NSLocalizedString(@"Delete", nil)];
-            lActionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                         destructiveButtonTitle:nil
-                                              otherButtonTitles:NSLocalizedString(@"FromLibrary", nil), NSLocalizedString(@"ImageLink", @""), NSLocalizedString(@"Delete", nil), nil];
-        }
-        else
-        {
-            lActionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                         destructiveButtonTitle:nil
-                                              otherButtonTitles:NSLocalizedString(@"FromLibrary", nil), NSLocalizedString(@"ImageLink", @""), nil];
-        }
-    }
-    else
-    {
-        if (self.mImage || [self.mImageLink length] > 0)
-        {
-            [lButtonArray addObject:NSLocalizedString(@"Delete", nil)];
-            lActionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                         destructiveButtonTitle:nil
-                                              otherButtonTitles:NSLocalizedString(@"FromLibrary", nil), NSLocalizedString(@"TakeAPicture", nil), NSLocalizedString(@"ImageLink", @""), NSLocalizedString(@"Delete", nil), nil];
-        }
-        else
-        {
-            lActionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                         destructiveButtonTitle:nil
-                                              otherButtonTitles:NSLocalizedString(@"FromLibrary", nil), NSLocalizedString(@"TakeAPicture", nil), NSLocalizedString(@"ImageLink", @""), nil];
-        }
-    }
-    
+    UIActionSheet* lActionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                              delegate:self
+                                                     cancelButtonTitle:nil
+                                                destructiveButtonTitle:nil
+                                                     otherButtonTitles:nil];
+
+    UIImage* lImage = [UIPasteboard generalPasteboard].image;
         
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        [lActionSheet addButtonWithTitle:NSLocalizedString(@"TakeAPicture", @"")];
+    }
+    
+    [lActionSheet addButtonWithTitle:NSLocalizedString(@"FromLibrary", @"")];
+    if (lImage)
+    {
+        [lActionSheet addButtonWithTitle:NSLocalizedString(@"Paste", @"")];
+    }
+    
+    
+    [lActionSheet addButtonWithTitle:NSLocalizedString(@"Delete", @"")];
+    [lActionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
+    lActionSheet.cancelButtonIndex = lActionSheet.numberOfButtons - 1;
     lActionSheet.tag = kImagePickingActionSheetTag;
     
     [lActionSheet showInView:[_mDelegate viewControllerToDisplayImagePicker:self].view];
@@ -164,6 +144,12 @@
         lAlertView.tag = 212;
         [lAlertView show];
         [lAlertView release];
+    }
+    else if ([buttonTitle isEqualToString:NSLocalizedString(@"Paste", @"")])
+    {
+        self.mImage = [UIPasteboard generalPasteboard].image;
+        self.mImageLink = nil;
+        [self.mDelegate imagePicker:self DidPasteAPicture:self.mImage];
     }
     else if ([buttonTitle isEqualToString:NSLocalizedString(@"Delete", nil)])
     {
@@ -290,6 +276,7 @@
     
 	[picker dismissViewControllerAnimated:YES completion:nil];
     self.mImagePickerController = nil;
+    self.mImageLink = nil;
 }
 
 
