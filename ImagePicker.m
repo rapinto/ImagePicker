@@ -78,8 +78,6 @@
                                                 destructiveButtonTitle:nil
                                                      otherButtonTitles:nil];
 
-    UIImage* lImage = [UIPasteboard generalPasteboard].image;
-        
     
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
@@ -87,10 +85,8 @@
     }
     
     [lActionSheet addButtonWithTitle:NSLocalizedString(@"FromLibrary", @"")];
-    if (lImage)
-    {
-        [lActionSheet addButtonWithTitle:NSLocalizedString(@"Paste", @"")];
-    }
+    
+    [lActionSheet addButtonWithTitle:NSLocalizedString(@"Paste", @"")];
     
     
     [lActionSheet addButtonWithTitle:NSLocalizedString(@"Delete", @"")];
@@ -147,9 +143,24 @@
     }
     else if ([buttonTitle isEqualToString:NSLocalizedString(@"Paste", @"")])
     {
-        self.mImage = [UIPasteboard generalPasteboard].image;
-        self.mImageLink = nil;
-        [self.mDelegate imagePicker:self DidPasteAPicture:self.mImage];
+        UIImage* lImage = [UIPasteboard generalPasteboard].image;
+        
+        if (lImage)
+        {
+            self.mImage = [UIPasteboard generalPasteboard].image;
+            self.mImageLink = nil;
+            [self.mDelegate imagePicker:self DidPasteAPicture:self.mImage];
+        }
+        else
+        {
+            UIAlertView* lAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ForbiddenAction", @"")
+                                                                 message:NSLocalizedString(@"CopyAnImageBeforePasting", @"")
+                                                                delegate:nil
+                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                       otherButtonTitles:nil];
+            [lAlertView show];
+            [lAlertView release];
+        }
     }
     else if ([buttonTitle isEqualToString:NSLocalizedString(@"Delete", nil)])
     {
