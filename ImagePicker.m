@@ -89,7 +89,11 @@
     [lActionSheet addButtonWithTitle:NSLocalizedString(@"Paste", @"")];
     
     
-    [lActionSheet addButtonWithTitle:NSLocalizedString(@"Delete", @"")];
+    if (self.mImage || self.mImageLink)
+    {
+        [lActionSheet addButtonWithTitle:NSLocalizedString(@"Delete", @"")];
+    }
+    
     [lActionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
     lActionSheet.cancelButtonIndex = lActionSheet.numberOfButtons - 1;
     lActionSheet.tag = kImagePickingActionSheetTag;
