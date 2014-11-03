@@ -41,6 +41,7 @@
 @property (nonatomic) BOOL mTryUseFrontCamera;
 @property (nonatomic) BOOL mUsingCamera;
 @property (nonatomic) BOOL mDeletePicture;
+@property (nonatomic) BOOL mIsHiddenDeleteButton;
 
 - (void)pickImage;
 - (void)chooseFromAlbum;

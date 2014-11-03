@@ -40,6 +40,7 @@
 @synthesize mTryUseFrontCamera;
 @synthesize mDeletePicture;
 @synthesize mImageLink;
+@synthesize mIsHiddenDeleteButton;
 
 
 
@@ -89,7 +90,7 @@
     [lActionSheet addButtonWithTitle:NSLocalizedString(@"Paste", @"")];
     
     
-    if (self.mImage || self.mImageLink)
+    if ((self.mImage || self.mImageLink) && !mIsHiddenDeleteButton)
     {
         [lActionSheet addButtonWithTitle:NSLocalizedString(@"Delete", @"")];
     }
