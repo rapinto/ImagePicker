@@ -293,6 +293,7 @@
 	[picker dismissViewControllerAnimated:YES completion:nil];
     self.mImagePickerController = nil;
     self.mImageLink = nil;
+    self.mDeletePicture = NO;
 }
 
 
