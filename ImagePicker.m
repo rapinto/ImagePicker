@@ -111,7 +111,7 @@
 
 
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (actionSheet.tag != kImagePickingActionSheetTag)
     {
@@ -126,7 +126,7 @@
     
     NSString* buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
-	if([buttonTitle isEqualToString:NSLocalizedString(@"FromLibrary", nil)])
+    if([buttonTitle isEqualToString:NSLocalizedString(@"FromLibrary", nil)])
     {
         [self chooseFromAlbum];
     }
