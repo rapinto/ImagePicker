@@ -72,36 +72,40 @@
         return;
     }
     
+    UIViewController* lViewController = [_mDelegate viewControllerToDisplayImagePicker:self];
     
-    UIActionSheet* lActionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                              delegate:self
-                                                     cancelButtonTitle:nil
-                                                destructiveButtonTitle:nil
-                                                     otherButtonTitles:nil];
-
-    
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    if (lViewController.view.window)
     {
-        [lActionSheet addButtonWithTitle:NSLocalizedString(@"TakeAPicture", @"")];
+        UIActionSheet* lActionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                  delegate:self
+                                                         cancelButtonTitle:nil
+                                                    destructiveButtonTitle:nil
+                                                         otherButtonTitles:nil];
+        
+        
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        {
+            [lActionSheet addButtonWithTitle:NSLocalizedString(@"TakeAPicture", @"")];
+        }
+        
+        [lActionSheet addButtonWithTitle:NSLocalizedString(@"FromLibrary", @"")];
+        
+        [lActionSheet addButtonWithTitle:NSLocalizedString(@"Paste", @"")];
+        
+        
+        if ((self.mImage || self.mImageLink) && !mIsHiddenDeleteButton)
+        {
+            [lActionSheet addButtonWithTitle:NSLocalizedString(@"Delete", @"")];
+        }
+        
+        [lActionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
+        lActionSheet.cancelButtonIndex = lActionSheet.numberOfButtons - 1;
+        lActionSheet.tag = kImagePickingActionSheetTag;
+        
+        [lActionSheet showInView:lViewController.view];
+        
+        [lActionSheet release] ;
     }
-    
-    [lActionSheet addButtonWithTitle:NSLocalizedString(@"FromLibrary", @"")];
-    
-    [lActionSheet addButtonWithTitle:NSLocalizedString(@"Paste", @"")];
-    
-    
-    if ((self.mImage || self.mImageLink) && !mIsHiddenDeleteButton)
-    {
-        [lActionSheet addButtonWithTitle:NSLocalizedString(@"Delete", @"")];
-    }
-    
-    [lActionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
-    lActionSheet.cancelButtonIndex = lActionSheet.numberOfButtons - 1;
-    lActionSheet.tag = kImagePickingActionSheetTag;
-    
-    [lActionSheet showInView:[_mDelegate viewControllerToDisplayImagePicker:self].view];
-    
-	[lActionSheet release] ;
 }
 
 
