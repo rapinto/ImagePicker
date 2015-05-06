@@ -65,7 +65,8 @@
 
 
 
-- (void)pickImage
+- (void)pickImageFromRect:(CGRect)_FromRect
+                   inView:(UIView*)_View
 {
     if (!_mDelegate)
     {
@@ -102,7 +103,11 @@
         lActionSheet.cancelButtonIndex = lActionSheet.numberOfButtons - 1;
         lActionSheet.tag = kImagePickingActionSheetTag;
         
-        [lActionSheet showInView:lViewController.view];
+        
+        [lActionSheet showFromRect:CGRectMake(0, _FromRect.origin.y, _FromRect.size.width,
+                                              _FromRect.size.height)
+                            inView:_View
+                          animated:YES];
         
         [lActionSheet release] ;
     }

@@ -43,7 +43,8 @@
 @property (nonatomic) BOOL mDeletePicture;
 @property (nonatomic) BOOL mIsHiddenDeleteButton;
 
-- (void)pickImage;
+- (void)pickImageFromRect:(CGRect)_FromRect
+                   inView:(UIView*)_View;
 - (void)chooseFromAlbum;
 - (void)chooseFromCamera;
 
