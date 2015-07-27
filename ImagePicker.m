@@ -178,11 +178,7 @@
     }
     else if ([buttonTitle isEqualToString:NSLocalizedString(@"Delete", nil)])
     {
-        self.mImage = nil;
-        self.mImageLink = nil;
-        [_mDelegate imagePickerDeleteImage:self];
-        self.mImage = nil;
-        mDeletePicture = YES;
+        [self deleteImage];
     }
 }
 
@@ -270,6 +266,16 @@
     
     [[_mDelegate viewControllerToDisplayImagePicker:self] presentViewController:self.mImagePickerController animated:false completion:nil];
 
+}
+
+
+- (void)deleteImage
+{
+    self.mImage = nil;
+    self.mImageLink = nil;
+    [_mDelegate imagePickerDeleteImage:self];
+    self.mImage = nil;
+    mDeletePicture = YES;
 }
 
 

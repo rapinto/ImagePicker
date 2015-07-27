@@ -47,6 +47,7 @@
                    inView:(UIView*)_View;
 - (void)chooseFromAlbum;
 - (void)chooseFromCamera;
+- (void)deleteImage;
 
 
 @end
